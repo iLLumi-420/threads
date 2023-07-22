@@ -1,32 +1,36 @@
 import concurrent.futures
 import time
-
+import requests
 
 start = time.perf_counter()
 
-def worker(seconds):
-    print(f'Sleeping for {seconds} seconds')
-    time.sleep(seconds)
-    return f'Done sleeping for {seconds}'
+img_urls = [
+    'https://images.unsplash.com/photo-1516117172878-fd2c41f4a759',
+    'https://images.unsplash.com/photo-1532009324734-20a7a5813719',
+    'https://images.unsplash.com/photo-1524429656589-6633a470097c',
+    'https://images.unsplash.com/photo-1530224264768-7ff8c1789d79',
+    'https://images.unsplash.com/photo-1564135624576-c5c88640f235',
+    'https://images.unsplash.com/photo-1541698444083-023c97d3f4b6',
+    'https://images.unsplash.com/photo-1522364723953-452d3431c267',
+    'https://images.unsplash.com/photo-1513938709626-033611b8cc03',
+    'https://images.unsplash.com/photo-1507143550189-fed454f93097',
+    'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e',
+    'https://images.unsplash.com/photo-1504198453319-5ce911bafcde',
+]
 
-seconds = [5,4,3,2,1]
+
+    
+def download_image(url):
+    img_bytes = requests.get(url).content
+    img_name = url.split('/')[3]
+    img_name = f'{img_name}.jpg'
+
+    with open(img_name, 'wb') as img_file:
+        img_file.write(img_bytes)
+        print(f'{img_name} was dowloaded')
 
 with concurrent.futures.ThreadPoolExecutor() as executor:
-    results = [executor.submit(worker, sec) for sec in seconds]
-
-    for f in concurrent.futures.as_completed(results):
-        print(f.result())
-
-
-# threads = []
-# for _ in range(10):
-#     t = threading.Thread(target=worker)
-#     t.start()
-#     threads.append(t)
-
-# for thread in threads:
-#     thread.join()
-
+    results = executor.map(download_image, img_urls)
 
 finish = time.perf_counter()
 
