@@ -10,16 +10,14 @@ def worker():
     print('Done sleeping')
 
 
+threads = []
+for _ in range(10):
+    t = threading.Thread(target=worker)
+    t.start()
+    threads.append(t)
 
-t1 = threading.Thread(target=worker)
-t2 = threading.Thread(target=worker)
-
-
-t1.start()
-t2.start()
-
-t1.join()
-t2.join()
+for thread in threads:
+    thread.join()
 
 
 finish = time.perf_counter()
