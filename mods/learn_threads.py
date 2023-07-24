@@ -12,8 +12,6 @@ img_urls = [
     'https://images.unsplash.com/photo-1564135624576-c5c88640f235',
     'https://images.unsplash.com/photo-1541698444083-023c97d3f4b6',
     'https://images.unsplash.com/photo-1522364723953-452d3431c267',
-    'https://images.unsplash.com/photo-1513938709626-033611b8cc03',
-    'https://images.unsplash.com/photo-1507143550189-fed454f93097',
     'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e',
     'https://images.unsplash.com/photo-1504198453319-5ce911bafcde',
 ]
@@ -31,6 +29,7 @@ def download_image(url):
 
 with concurrent.futures.ThreadPoolExecutor() as executor:
     results = executor.map(download_image, img_urls)
+
 
 finish = time.perf_counter()
 
