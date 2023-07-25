@@ -18,14 +18,11 @@ img_names = [
     'photo-1504198453319-5ce911bafcde.jpg',
 ]
 
-def load_image(img_name):
-    image = Image.open(img_name)
-    print(f'{img_name} was loaded')
-    return image
 
 
-def process_image(img_name, image):
+def process_image(img_name):
     try:
+        image = Image.open(img_name)
         image = image.filter(ImageFilter.GaussianBlur(15))
         image.thumbnail(size)
         image.save(f'processed/{img_name}')
@@ -34,11 +31,10 @@ def process_image(img_name, image):
         print('Processing failed')
 
 
-with concurrent.futures.ThreadPoolExecutor() as executor:
-    images = executor.map(load_image, img_names)
+
 
 with concurrent.futures.ProcessPoolExecutor() as executor:
-    executor.map(process_image, img_names, images)
+    executor.map(process_image, img_names)
 
 
 finish = time.perf_counter()
